@@ -742,6 +742,7 @@ public class Manager : ArmchairManager {
 #if os(iOS)
     private var ratingAlert: UIAlertView? = nil
     private let reviewURLTemplate  = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&id=APP_ID&at=AFFILIATE_CODE&ct=AFFILIATE_CAMPAIGN_CODE"
+    private let ios11ReviewURLTemplate = "https://itunes.apple.com/us/app/idAPP_ID?ls=1&mt=8&action=write-review"
 #elseif os(OSX)
     private var ratingAlert: NSAlert? = nil
     private let reviewURLTemplate = "macappstore://itunes.apple.com/us/app/idAPP_ID?ls=1&mt=12&at=AFFILIATE_CODE&ct=AFFILIATE_CAMPAIGN_CODE"
@@ -1417,7 +1418,7 @@ public class Manager : ArmchairManager {
     }
 
     private func reviewURLString() -> String {
-        let template = reviewURLTemplate
+        let template = operatingSystemVersion >= 11 ? ios11ReviewURLTemplate : reviewURLTemplate
         var reviewURL = template.stringByReplacingOccurrencesOfString("APP_ID", withString: "\(appID)")
         reviewURL = reviewURL.stringByReplacingOccurrencesOfString("AFFILIATE_CODE", withString: "\(affiliateCode)")
         reviewURL = reviewURL.stringByReplacingOccurrencesOfString("AFFILIATE_CAMPAIGN_CODE", withString: "\(affiliateCampaignCode)")
